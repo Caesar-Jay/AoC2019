@@ -10,7 +10,6 @@ namespace Day5
             var input = File.ReadAllText("input.txt").Split(',');
 
             int[] intCodes = new int[input.Length];
-            int[] intOrig = new int[input.Length];
 
             for (int i = 0; i < input.Length; i++)
             {
@@ -23,27 +22,17 @@ namespace Day5
         static void OutputLocator(int[] intCodes)
         {
             int pos = 0;
-            int mode = 0;
-            int paramMode1 = 0;
-            int paramMode2 = 0;
-            int paramMode3 = 0;
-            int param1 = 0;
-            int param2 = 0;
 
 
             while (intCodes[pos] != 99)
             {
                 var instr = intCodes[pos].ToString().PadLeft(5, '0');
-                mode = int.Parse(instr.Substring(3, 2));
-                paramMode1 = int.Parse(instr.Substring(2, 1));
-                paramMode2 = int.Parse(instr.Substring(1, 1));
-                paramMode3 = int.Parse(instr.Substring(0, 1));
+                var mode = int.Parse(instr.Substring(3, 2));
+                var paramMode1 = int.Parse(instr.Substring(2, 1));
+                var paramMode2 = int.Parse(instr.Substring(1, 1));
 
-                if (mode == 1 || mode == 2)
-                {
-                    param1 = paramMode1 == 0 ? intCodes[intCodes[pos + 1]] : intCodes[pos + 1];
-                    param2 = paramMode2 == 0 ? intCodes[intCodes[pos + 2]] : intCodes[pos + 2];
-                }
+                var param1 = paramMode1 == 0 ? intCodes[intCodes[pos + 1]] : intCodes[pos + 1];
+                var param2 = paramMode2 == 0 ? intCodes[intCodes[pos + 2]] : intCodes[pos + 2];
 
                 switch (mode)
                 {
@@ -68,42 +57,42 @@ namespace Day5
                         pos += 2;
                         break;
                     case 5:
-                        if (intCodes[pos + 1] != 0)
+                        if (param1 != 0)
                         {
-                            intCodes[pos] = intCodes[pos + 2];
+                            pos = param2;
                         }
                         else
                             pos += 3;
                         break;
                     case 6:
-                        if (intCodes[pos + 1] == 0)
+                        if (param1 == 0)
                         {
-                            intCodes[pos] = intCodes[pos + 2];
+                            pos = param2;
                         }
                         else
                             pos += 3;
                         break;
                     case 7:
-                        if (intCodes[pos + 1] < intCodes[pos + 2])
+                        if (param1 < param2)
                         {
                             intCodes[intCodes[pos + 3]] = 1;
                         }
                         else
                         {
                             intCodes[intCodes[pos + 3]] = 0;
-                            pos += 4;
                         }
+                            pos += 4;
                         break;
                     case 8:
-                        if (intCodes[pos + 1] == intCodes[pos + 2])
+                        if (param1 == param2)
                         {
                             intCodes[intCodes[pos + 3]] = 1;
                         }
                         else
                         {
                             intCodes[intCodes[pos + 3]] = 0;
-                            pos += 4;
                         }
+                            pos += 4;
                         break;
                     default:
                         Console.WriteLine("Fel");
